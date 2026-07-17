@@ -1,0 +1,21 @@
+# Core ML / tensor stack
+torch>=2.1
+
+# Decomposer model loading (Qwen2.5-7B-Instruct, 4-bit NF4 quantization) and
+# the NLI entailment model (DeBERTa-v3-large-mnli-fever-anli-ling-wanli)
+transformers>=4.46
+accelerate>=0.34
+bitsandbytes>=0.43
+
+# NQ-Swap dataset loading (pminervini/NQ-Swap on the HF Hub)
+datasets>=2.20
+
+# Probe training (logistic regression layer sweep) and checkpointing
+scikit-learn>=1.3
+joblib>=1.3
+
+# Array/stats utilities used throughout the pipeline
+numpy>=1.26
+
+# McNemar's test for the H3 CAD-mitigation significance result (stage 27)
+statsmodels>=0.14
