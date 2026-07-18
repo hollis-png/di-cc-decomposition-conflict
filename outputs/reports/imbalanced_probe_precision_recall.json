@@ -1,0 +1,42 @@
+{
+  "target_imbalance_rate": 0.032,
+  "balanced": {
+    "layer": 20,
+    "n_test": 207,
+    "test_set_positive_rate": 0.4975845410628019,
+    "conflict_precision": 0.7980769230769231,
+    "conflict_recall": 0.8058252427184466,
+    "conflict_f1": 0.8019323671497585,
+    "overall_accuracy": 0.8019323671497585,
+    "confusion_matrix": [
+      [
+        83,
+        21
+      ],
+      [
+        20,
+        83
+      ]
+    ]
+  },
+  "imbalanced": {
+    "layer": 20,
+    "n_test": 111,
+    "test_set_positive_rate": 0.07207207207207207,
+    "conflict_precision": 0.5,
+    "conflict_recall": 0.25,
+    "conflict_f1": 0.3333333333333333,
+    "overall_accuracy": 0.9279279279279279,
+    "confusion_matrix": [
+      [
+        101,
+        2
+      ],
+      [
+        6,
+        2
+      ]
+    ]
+  },
+  "conflict_recall_change_balanced_minus_imbalanced": 0.5558252427184466
+}

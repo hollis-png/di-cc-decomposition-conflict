@@ -4,4 +4,14 @@ __pycache__/
 *.pyc
 data/processed/
 outputs/activations/
-outputs/reports/
+outputs/reports/*
+# Exceptions: small (<5KB) frozen report JSONs behind the numbers in
+# README.md's Headline Results table, so they're inspectable without
+# rerunning anything. Everything else under outputs/reports/ stays ignored.
+!outputs/reports/h3_baseline_transfer_eval_varratio.json
+!outputs/reports/h0_bootstrap_ci_summary.json
+!outputs/reports/h3_alpha_sensitivity.json
+!outputs/reports/imbalanced_probe_robustness.json
+!outputs/reports/imbalanced_probe_precision_recall.json
+!outputs/reports/h3_selfcheckgpt_baseline.json
+!outputs/reports/imbalanced_probe_multiseed.json

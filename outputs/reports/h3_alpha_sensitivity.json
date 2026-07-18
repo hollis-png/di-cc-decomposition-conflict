@@ -1,0 +1,102 @@
+{
+  "0.5": {
+    "alpha": 0.5,
+    "primary_effect": {
+      "n_entities_paired": 176,
+      "entity_level_2x2": {
+        "both_flagged_DI-CC": 36,
+        "only_baseline_flagged": 24,
+        "only_cad_flagged": 8,
+        "neither_flagged": 108
+      },
+      "mcnemar_statistic": 8.0,
+      "mcnemar_pvalue": 0.0070003666914999485,
+      "baseline_DI-CC_rate": {
+        "n_DI-CC": 60,
+        "n_total_subclaims": 1441,
+        "rate": 0.041637751561415685
+      },
+      "cad_DI-CC_rate": {
+        "n_DI-CC": 45,
+        "n_total_subclaims": 1411,
+        "rate": 0.031892274982282066
+      }
+    },
+    "side_effect": {
+      "vague_baseline": {
+        "label_counts": {
+          "legit": 311,
+          "DI-CC": 4,
+          "DI-UE": 163,
+          "excluded": 369
+        },
+        "total_subclaims": 847,
+        "n_unique_decompositions": 191,
+        "n_decompositions_with_leftover_pronoun": 190,
+        "leftover_pronoun_rate": 0.9947643979057592
+      },
+      "vague_cad": {
+        "label_counts": {
+          "legit": 239,
+          "DI-CC": 5,
+          "DI-UE": 115,
+          "excluded": 431
+        },
+        "total_subclaims": 790,
+        "n_unique_decompositions": 190,
+        "n_decompositions_with_leftover_pronoun": 187,
+        "leftover_pronoun_rate": 0.9842105263157894
+      }
+    }
+  },
+  "1.5": {
+    "alpha": 1.5,
+    "primary_effect": {
+      "n_entities_paired": 176,
+      "entity_level_2x2": {
+        "both_flagged_DI-CC": 22,
+        "only_baseline_flagged": 38,
+        "only_cad_flagged": 13,
+        "neither_flagged": 103
+      },
+      "mcnemar_statistic": 13.0,
+      "mcnemar_pvalue": 0.0006210434562277101,
+      "baseline_DI-CC_rate": {
+        "n_DI-CC": 60,
+        "n_total_subclaims": 1441,
+        "rate": 0.041637751561415685
+      },
+      "cad_DI-CC_rate": {
+        "n_DI-CC": 42,
+        "n_total_subclaims": 1211,
+        "rate": 0.03468208092485549
+      }
+    },
+    "side_effect": {
+      "vague_baseline": {
+        "label_counts": {
+          "legit": 311,
+          "DI-CC": 4,
+          "DI-UE": 163,
+          "excluded": 369
+        },
+        "total_subclaims": 847,
+        "n_unique_decompositions": 191,
+        "n_decompositions_with_leftover_pronoun": 190,
+        "leftover_pronoun_rate": 0.9947643979057592
+      },
+      "vague_cad": {
+        "label_counts": {
+          "legit": 135,
+          "DI-CC": 7,
+          "DI-UE": 57,
+          "excluded": 211
+        },
+        "total_subclaims": 410,
+        "n_unique_decompositions": 112,
+        "n_decompositions_with_leftover_pronoun": 111,
+        "leftover_pronoun_rate": 0.9910714285714286
+      }
+    }
+  }
+}

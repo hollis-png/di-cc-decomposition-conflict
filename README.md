@@ -7,13 +7,19 @@ own parametric belief for what a source passage actually says, producing an
 atomic claim that contradicts the source it was supposed to summarize
 faithfully.
 
-This repository lets you reproduce the paper's two headline results:
+This repository lets you reproduce the paper's headline results and the
+robustness checks added during revision:
 
-- **H0 (mechanistic):** a linear probe trained *only* on classical
-  context-memory conflict data (NQ-Swap), and never exposed to decomposition
-  output, still detects DI-CC in decomposition activations.
+- **H0 (mechanistic, primary result):** a linear probe trained *only* on
+  classical context-memory conflict data (NQ-Swap), and never exposed to
+  decomposition output, still detects DI-CC in decomposition activations at
+  n=64, under two independent layer-selection criteria.
 - **H3 (mitigation):** context-aware decoding (CAD) reduces the DI-CC rate,
-  at a completeness cost on coreference-heavy inputs.
+  at a severe completeness cost (including outright identity fabrication) on
+  coreference-heavy inputs.
+- **Robustness checks:** a class-imbalance precision/recall characterization
+  of the H0 probe (multi-seed), a CAD contrast-strength (α) sensitivity
+  sweep, and a SelfCheckGPT-style self-consistency baseline comparison.
 
 This is a **research artifact**, not a general-purpose library: it exists to
 let you re-run and inspect the exact pipeline behind the paper's numbers, not
@@ -23,19 +29,26 @@ to be installed as a dependency in other projects.
 
 | Result | Finding |
 |---|---|
-| H0 — mechanistic transfer | A probe trained only on NQ-Swap (classical context-memory conflict) detects DI-CC in decomposition activations with AUC ≈ 0.86–0.88 (n=64), despite never seeing decomposition data during training. |
-| H3 — CAD mitigation | Context-aware decoding reduces the DI-CC rate from 4.16% to 2.57% (McNemar's test, p = 0.000041), but costs a 19.4% structural parsing failure rate on coreference-heavy (vague/elliptical) inputs. |
+| H0 — mechanistic transfer (**primary**, n=64) | A probe trained only on NQ-Swap detects DI-CC in decomposition activations: AUC 0.881 [0.841, 0.916] vs. legit, AUC 0.863 [0.806, 0.913] vs. DI-UE (variance-ratio layer selection). Holds under accuracy-based selection too (0.858 / 0.893). |
+| H0 — pilot (n=14, original 40-person pool) | Same test at the original, smaller sample: AUC 0.893–0.917 vs. legit, 0.806–0.934 vs. DI-UE, depending on layer-selection criterion. Retained for comparison, not the primary result. |
+| H3 — CAD mitigation | Context-aware decoding reduces the DI-CC rate from 4.16% to 2.57% (McNemar's test, p = 0.000041), but 19.4% of coreference-heavy decompositions fail to parse under CAD — 84% of those failures involve the decomposer fabricating a different person's identity, not just omitting detail. Not a deployment-ready mitigation as implemented. |
+| Class-imbalance robustness | At a realistic training-class ratio (~6.8% positive), the H0 probe's fixed-threshold conflict-class recall collapses from 0.808±0.039 (balanced) to 0.247±0.190 (imbalanced), averaged over 50 random seeds — AUC alone does not reveal this. |
+| SelfCheckGPT baseline | On the same n=64 dataset, SelfCheckGPT-style self-consistency sampling fails to detect DI-CC at all (AUC 0.508 vs. legit, 0.142 — wrong-signed — vs. DI-UE), because DI-CC's defining stability makes it recur consistently across resamples, the opposite of what self-consistency methods flag. |
 
-Full statistics are written to `outputs/reports/transfer_eval.json` and
-`outputs/reports/h3_mitigation.json` when you run stages 7 and 27
-respectively.
+Full statistics are written under `outputs/reports/` by the corresponding
+stage script (see table in [Running the Pipeline](#running-the-pipeline)
+below); the reports behind the numbers above are also frozen in this repo
+under `outputs/reports/` so you can inspect them without rerunning anything.
 
 ## What's Included
 
 This release covers the core **7B pipeline**: NQ-Swap probe training, Phase 0
-mechanistic validation (stages 1–7), and the H3 CAD mitigation study (stages
-24–27, 30–31). The decomposer was also tested at 3B and 14B scale in the
-paper, but that ablation is not part of this staged release.
+mechanistic validation (stages 1–7), the n=64 primary-result pipeline
+(stages 28, 29, 32, 33), the H3 CAD mitigation study (stages 24–27, 30–31),
+and four revision-round robustness checks (stages 34–41: class-imbalance
+precision/recall, CAD α sensitivity, SelfCheckGPT baseline). The decomposer
+was also tested at 3B and 14B scale in the paper (Phase 2 scale ablation),
+but that ablation's code is not part of this staged release.
 
 ```
 config.py                 # central path/model config (env-var driven)
@@ -48,11 +61,13 @@ phase0/                   # library code: data loading, decomposition, probing
   utils/                  #   answer matching, keep-awake utility
 scripts/                  # numbered pipeline stages, see below
 data/
-  factscore_subclaims_40person.jsonl   # frozen 40-person bio+decomposition data (H0)
-  h3_bios_191person.jsonl              # frozen 191-person bio pool (H3)
+  factscore_subclaims_40person.jsonl   # frozen 40-person bio+decomposition data (H0 pilot)
+  h3_bios_191person.jsonl              # frozen 191-person bio pool (H3, also source of H0 primary)
+  h3_selfcheckgpt_resamples.jsonl      # frozen N=10 temperature-sampled resamples (SelfCheckGPT baseline)
 outputs/probes/
   probe_layer22.joblib     # frozen probe checkpoint, accuracy-selected layer
   probe_layer20.joblib     # frozen probe checkpoint, variance-ratio-selected layer
+outputs/reports/           # frozen small (<5KB) JSON reports behind every number above
 ```
 
 ## Prerequisites
@@ -113,6 +128,21 @@ python scripts/07_evaluate_transfer.py
 Both `01`–`07` and `24`–`25` scripts support `--limit N` for a quick smoke
 test before committing to a full (GPU-hours-long) run.
 
+### H0 — primary result (n=64, reuses H3's baseline pool)
+
+The paper's actual headline AUCs (0.881 / 0.863) come from applying the H0
+methodology to the larger 191-entity H3 pool's non-CAD (`*_baseline`)
+decompositions, not the original 40-person pilot above. This needs the H3
+bio pool and baseline decompositions/labels (see the H3 section below) to
+already exist, plus a frozen NQ-Swap probe-training run (stages 1–2):
+
+```bash
+python scripts/28_extract_h3_baseline_activations.py   # needs GPU
+python scripts/29_evaluate_h3_baseline_transfer.py      # accuracy-layer AUC, no GPU
+python scripts/32_evaluate_h3_baseline_transfer_variance_ratio.py  # variance-ratio-layer AUC (primary), no GPU
+python scripts/33_bootstrap_ci_all_h0_results.py        # bootstrap 95% CIs for all 4 (sample x criterion) configs, no GPU
+```
+
 ### H3 — CAD mitigation
 
 ```bash
@@ -148,6 +178,67 @@ python scripts/30_train_probe_variance_ratio.py
 python scripts/31_evaluate_transfer_variance_ratio.py
 ```
 
+### Class-imbalance robustness check
+
+The H0 probe above is trained on perfectly balanced NQ-Swap data (413
+conflict / 413 no-conflict). Real deployment prevalence is far lower
+(DI-CC is ~3.2% of atomic claims — see the paper's Section 5). These
+scripts retrain the probe at a downsampled, closer-to-deployment class
+ratio and report fixed-threshold precision/recall (not just AUC) — the
+headline finding is that AUC looks fine under imbalance, but fixed-threshold
+conflict-class recall collapses. Needs the frozen `outputs/activations/`
+files from stages 2 and 28; no GPU needed for these scripts themselves:
+
+```bash
+python scripts/34_probe_imbalanced_robustness.py         # first pass: AUC only (superseded below)
+python scripts/38_imbalanced_probe_precision_recall.py   # adds precision/recall/confusion matrix, single seed
+python scripts/41_imbalanced_probe_multiseed.py           # repeats across 50 seeds -> distribution, not a point estimate
+```
+
+Run `41` if you only run one of these three — it supersedes `34` and `38`
+with a proper multi-seed characterization (mean/std/range) rather than a
+single, potentially noisy split.
+
+### CAD contrast-strength (α) sensitivity sweep
+
+The CAD mitigation above uses the literature-recommended α=1.0. These
+scripts sweep α ∈ {0.5, 1.5} on the full 191-entity pool to check whether a
+different value trades off the primary suppression effect against the
+side-effect severity better than the default:
+
+```bash
+python scripts/35_h3_alpha_sensitivity.py         # decode at alpha in {0.5, 1.5}, needs GPU, resumable, long-running
+python scripts/36_label_h3_alpha_sensitivity.py   # NLI-label every subclaim, needs GPU
+python scripts/37_evaluate_h3_alpha_sensitivity.py # McNemar's + side-effect stats per alpha, no GPU
+```
+
+Only the `_cad` conditions are re-decoded (`_baseline` doesn't depend on
+α and is reused from stage 25's output), but this is still 191 people × 2
+conditions × 2 α values ≈ 750 decodes — expect several hours on a single
+GPU.
+
+### SelfCheckGPT baseline comparison
+
+Compares the mechanistic probe against SelfCheckGPT-style self-consistency
+sampling (Manakul et al., 2023) on the same n=64 primary dataset, using the
+same permutation-test/bootstrap-CI methodology, so the two detectors are
+directly comparable:
+
+```bash
+python scripts/39_selfcheckgpt_resample.py   # N=10 temperature resamples per (person, condition), needs GPU, resumable, long-running
+python scripts/40_selfcheckgpt_evaluate.py   # NLI-based inconsistency scoring + AUC, needs GPU (NLI model only)
+```
+
+Stage 39 resamples all 329 (person, condition) pairs behind the n=64
+dataset × 10 samples each ≈ 3,290 generations — expect several hours. To
+skip it, copy the frozen resamples into place first:
+
+```bash
+mkdir -p data/processed
+cp data/h3_selfcheckgpt_resamples.jsonl data/processed/h3_selfcheckgpt_resamples.jsonl
+python scripts/40_selfcheckgpt_evaluate.py
+```
+
 ## Why the Data Files Are Frozen
 
 `data/factscore_subclaims_40person.jsonl` (75 bio records / 443 subclaims)
@@ -162,6 +253,18 @@ The two frozen probe checkpoints in `outputs/probes/` (`probe_layer22.joblib`,
 accuracy-selected; `probe_layer20.joblib`, variance-ratio-selected) are the
 trained artifacts of stage 3 / stage 30 and let you skip straight to stage 7
 / 31 if you also use the frozen NQ-Swap activations you extract via stage 2.
+
+`data/h3_selfcheckgpt_resamples.jsonl` (3,290 temperature-sampled
+decompositions) is the pinned output of stage 39, for the same reason: it's
+several hours of GPU-bound, stochastic generation, and freezing it lets
+anyone reproduce the SelfCheckGPT baseline's exact numbers by running only
+stage 40.
+
+The small JSON reports under `outputs/reports/` (all under 5KB) are also
+committed directly, unlike the large `outputs/activations/*.npz` files
+(hundreds of MB, regenerable via stages 2/6/28 but deliberately not
+version-controlled) — this lets you inspect every number cited above without
+running anything at all.
 
 ## Configuration
 

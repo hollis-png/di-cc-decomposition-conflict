@@ -1,0 +1,110 @@
+[
+  {
+    "config": "n14_accuracy_layer",
+    "layer": 22,
+    "group_sizes": {
+      "DI-CC": 14,
+      "legit": 303,
+      "DI-UE": 49
+    },
+    "DI-CC_vs_legit": {
+      "observed_auc": 0.8929750117868931,
+      "ci_lower": 0.8411126826968411,
+      "ci_upper": 0.9387081565299388,
+      "ci_level": 0.95,
+      "n_resamples": 2000,
+      "n_pos": 14,
+      "n_neg": 303
+    },
+    "DI-CC_vs_DI-UE": {
+      "observed_auc": 0.934402332361516,
+      "ci_lower": 0.8425291545189504,
+      "ci_upper": 0.9941690962099126,
+      "ci_level": 0.95,
+      "n_resamples": 2000,
+      "n_pos": 14,
+      "n_neg": 49
+    }
+  },
+  {
+    "config": "n14_variance_ratio_layer",
+    "layer": 20,
+    "group_sizes": {
+      "DI-CC": 14,
+      "legit": 303,
+      "DI-UE": 49
+    },
+    "DI-CC_vs_legit": {
+      "observed_auc": 0.9174917491749175,
+      "ci_lower": 0.85997171145686,
+      "ci_upper": 0.9592232437529468,
+      "ci_level": 0.95,
+      "n_resamples": 2000,
+      "n_pos": 14,
+      "n_neg": 303
+    },
+    "DI-CC_vs_DI-UE": {
+      "observed_auc": 0.8061224489795918,
+      "ci_lower": 0.6923833819241983,
+      "ci_upper": 0.902332361516035,
+      "ci_level": 0.95,
+      "n_resamples": 2000,
+      "n_pos": 14,
+      "n_neg": 49
+    }
+  },
+  {
+    "config": "n64_accuracy_layer",
+    "layer": 22,
+    "group_sizes": {
+      "DI-CC": 64,
+      "legit": 1626,
+      "DI-UE": 164
+    },
+    "DI-CC_vs_legit": {
+      "observed_auc": 0.8583852244772447,
+      "ci_lower": 0.814939124000615,
+      "ci_upper": 0.8974114487238621,
+      "ci_level": 0.95,
+      "n_resamples": 2000,
+      "n_pos": 64,
+      "n_neg": 1626
+    },
+    "DI-CC_vs_DI-UE": {
+      "observed_auc": 0.8932926829268292,
+      "ci_lower": 0.8400319169207316,
+      "ci_upper": 0.9410299161585366,
+      "ci_level": 0.95,
+      "n_resamples": 2000,
+      "n_pos": 64,
+      "n_neg": 164
+    }
+  },
+  {
+    "config": "n64_variance_ratio_layer",
+    "layer": 20,
+    "group_sizes": {
+      "DI-CC": 64,
+      "legit": 1626,
+      "DI-UE": 164
+    },
+    "DI-CC_vs_legit": {
+      "observed_auc": 0.8810924046740467,
+      "ci_lower": 0.8407785113007379,
+      "ci_upper": 0.9164242677583025,
+      "ci_level": 0.95,
+      "n_resamples": 2000,
+      "n_pos": 64,
+      "n_neg": 1626
+    },
+    "DI-CC_vs_DI-UE": {
+      "observed_auc": 0.8633765243902438,
+      "ci_lower": 0.805637862042683,
+      "ci_upper": 0.9130216272865853,
+      "ci_level": 0.95,
+      "n_resamples": 2000,
+      "n_pos": 64,
+      "n_neg": 164
+    }
+  }
+]

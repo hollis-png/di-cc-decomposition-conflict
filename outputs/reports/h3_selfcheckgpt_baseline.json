@@ -1,0 +1,39 @@
+{
+  "method": "SelfCheckGPT-NLI (Manakul et al. 2023), N=10 temperature-1.0 resamples",
+  "n_resamples_per_claim": 10,
+  "group_sizes": {
+    "DI-CC": 64,
+    "legit": 1626,
+    "DI-UE": 164
+  },
+  "DI-CC_vs_legit_permutation": {
+    "observed_auc": 0.507879766297663,
+    "permutation_p_value": 0.3815,
+    "n_pos": 64,
+    "n_neg": 1626
+  },
+  "DI-CC_vs_legit_bootstrap_ci": {
+    "observed_auc": 0.507879766297663,
+    "ci_lower": 0.4526444063268758,
+    "ci_upper": 0.5638939739006764,
+    "ci_level": 0.95,
+    "n_resamples": 2000,
+    "n_pos": 64,
+    "n_neg": 1626
+  },
+  "DI-CC_vs_DI-UE_permutation": {
+    "observed_auc": 0.1423875762195122,
+    "permutation_p_value": 1.0,
+    "n_pos": 64,
+    "n_neg": 164
+  },
+  "DI-CC_vs_DI-UE_bootstrap_ci": {
+    "observed_auc": 0.1423875762195122,
+    "ci_lower": 0.09888528963414632,
+    "ci_upper": 0.19107398056402441,
+    "ci_level": 0.95,
+    "n_resamples": 2000,
+    "n_pos": 64,
+    "n_neg": 164
+  }
+}

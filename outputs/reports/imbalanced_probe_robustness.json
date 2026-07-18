@@ -1,0 +1,44 @@
+{
+  "target_imbalance_rate": 0.032,
+  "actual_imbalance_rate": 0.06772009029345373,
+  "n_train_pos": 30,
+  "n_train_neg": 413,
+  "selected_layer": 20,
+  "variance_ratio": 0.03286309167742729,
+  "nq_swap_test_acc": 0.9279279279279279,
+  "group_sizes": {
+    "DI-CC": 64,
+    "legit": 1626,
+    "DI-UE": 164
+  },
+  "DI-CC_vs_legit_permutation": {
+    "observed_auc": 0.929754766297663,
+    "permutation_p_value": 0.0,
+    "n_pos": 64,
+    "n_neg": 1626
+  },
+  "DI-CC_vs_legit_bootstrap_ci": {
+    "observed_auc": 0.929754766297663,
+    "ci_lower": 0.8898869926199262,
+    "ci_upper": 0.9623315940190651,
+    "ci_level": 0.95,
+    "n_resamples": 2000,
+    "n_pos": 64,
+    "n_neg": 1626
+  },
+  "DI-CC_vs_DI-UE_permutation": {
+    "observed_auc": 0.9518864329268293,
+    "permutation_p_value": 0.0,
+    "n_pos": 64,
+    "n_neg": 164
+  },
+  "DI-CC_vs_DI-UE_bootstrap_ci": {
+    "observed_auc": 0.9518864329268293,
+    "ci_lower": 0.9104420731707318,
+    "ci_upper": 0.9849466463414633,
+    "ci_level": 0.95,
+    "n_resamples": 2000,
+    "n_pos": 64,
+    "n_neg": 164
+  }
+}
