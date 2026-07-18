@@ -40,11 +40,6 @@ PROBE_LAYER_CANDIDATES = list(range(8, NUM_HIDDEN_STATES, 2))
 # --- NLI model for entailment checks (R |= c_i) ---
 NLI_MODEL_NAME = "MoritzLaurer/DeBERTa-v3-large-mnli-fever-anli-ling-wanli"
 
-# --- Embedding model for closed-book recoverability / semantic checks ---
-# Reuses BGE, consistent with CREDENCE_2026's Semantic-F1 choice.
-EMBEDDING_MODEL_NAME = "BAAI/bge-large-en-v1.5"
-RECOVERABILITY_SIM_THRESHOLD = 0.80  # cosine sim threshold, see decomposition/closed_book_probe.py
-
 # --- Paths ---
 DATA_RAW = PROJECT_ROOT / "data" / "raw"
 DATA_PROCESSED = PROJECT_ROOT / "data" / "processed"
