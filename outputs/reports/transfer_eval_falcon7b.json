@@ -1,0 +1,20 @@
+{
+  "best_layer": 28,
+  "group_sizes": {
+    "DI-CC": 10,
+    "legit": 1141,
+    "DI-UE": 2
+  },
+  "DI-CC_vs_legit": {
+    "observed_auc": 0.5244522348816827,
+    "permutation_p_value": 0.3825,
+    "n_pos": 10,
+    "n_neg": 1141
+  },
+  "DI-CC_vs_DI-UE": {
+    "observed_auc": 0.4,
+    "permutation_p_value": 0.6775,
+    "n_pos": 10,
+    "n_neg": 2
+  }
+}

@@ -20,6 +20,13 @@ _SCALE_MODELS = {
     "3b": ("Qwen/Qwen2.5-3B-Instruct", 36),
     "7b": ("Qwen/Qwen2.5-7B-Instruct", 28),
     "14b": ("Qwen/Qwen2.5-14B-Instruct", 48),
+    # Cross-model-family validation: not a Qwen2.5 scale point, but reuses
+    # the same _scale_path() mechanism so outputs land in *_mistral7b/
+    # *_falcon7b-suffixed paths and never touch existing Qwen results. Both
+    # non-gated (Apache-2.0), no HF token needed. num_hidden_layers verified
+    # against each model's own config.json.
+    "mistral7b": ("mistralai/Mistral-7B-Instruct-v0.3", 32),
+    "falcon7b": ("tiiuae/falcon-7b-instruct", 32),
 }
 if PHASE0_SCALE not in _SCALE_MODELS:
     raise ValueError(f"PHASE0_SCALE must be one of {list(_SCALE_MODELS)}, got {PHASE0_SCALE!r}")

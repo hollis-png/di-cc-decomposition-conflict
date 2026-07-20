@@ -1,0 +1,28 @@
+{
+  "layer": 18,
+  "group_sizes": {
+    "DI-CC": 74,
+    "legit": 2941,
+    "DI-UE": 143
+  },
+  "DI-CC_vs_legit": {
+    "observed_auc": 0.39655109036271907,
+    "ci_lower": 0.34425606752621374,
+    "ci_upper": 0.44887483113851695,
+    "ci_level": 0.95,
+    "n_resamples": 2000,
+    "n_pos": 74,
+    "n_neg": 2941,
+    "permutation_p_value": 0.9995
+  },
+  "DI-CC_vs_DI-UE": {
+    "observed_auc": 0.30750330750330745,
+    "ci_lower": 0.2383245133245133,
+    "ci_upper": 0.3851894726894726,
+    "ci_level": 0.95,
+    "n_resamples": 2000,
+    "n_pos": 74,
+    "n_neg": 143,
+    "permutation_p_value": 1.0
+  }
+}

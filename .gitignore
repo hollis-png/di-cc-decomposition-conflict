@@ -15,3 +15,11 @@ outputs/reports/*
 !outputs/reports/imbalanced_probe_precision_recall.json
 !outputs/reports/h3_selfcheckgpt_baseline.json
 !outputs/reports/imbalanced_probe_multiseed.json
+!outputs/reports/bootstrap_ci_mistral7b.json
+!outputs/reports/layer_sweep_mistral7b.json
+!outputs/reports/layer_sweep_varratio_mistral7b.json
+!outputs/reports/transfer_eval_mistral7b.json
+!outputs/reports/transfer_eval_varratio_mistral7b.json
+!outputs/reports/bootstrap_ci_falcon7b.json
+!outputs/reports/layer_sweep_falcon7b.json
+!outputs/reports/transfer_eval_falcon7b.json

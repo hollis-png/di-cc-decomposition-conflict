@@ -34,6 +34,8 @@ to be installed as a dependency in other projects.
 | H3 — CAD mitigation | Context-aware decoding reduces the DI-CC rate from 4.16% to 2.57% (McNemar's test, p = 0.000041), but 19.4% of coreference-heavy decompositions fail to parse under CAD — 84% of those failures involve the decomposer fabricating a different person's identity, not just omitting detail. Not a deployment-ready mitigation as implemented. |
 | Class-imbalance robustness | At a realistic training-class ratio (~6.8% positive), the H0 probe's fixed-threshold conflict-class recall collapses from 0.808±0.039 (balanced) to 0.247±0.190 (imbalanced), averaged over 50 random seeds — AUC alone does not reveal this. |
 | SelfCheckGPT baseline | On the same n=64 dataset, SelfCheckGPT-style self-consistency sampling fails to detect DI-CC at all (AUC 0.508 vs. legit, 0.142 — wrong-signed — vs. DI-UE), because DI-CC's defining stability makes it recur consistently across resamples, the opposite of what self-consistency methods flag. |
+| Cross-model validation — Mistral-7B-Instruct-v0.3 | H0 does **not** replicate: AUC 0.397 [0.344, 0.449] vs. legit, 0.308 [0.238, 0.385] vs. DI-UE — both below chance. Checked and ruled out as explanations: statistical power (CI is narrow, not wide), layer-selection criterion (variance-ratio selects the identical layer), and labeling quality (manual review of all 74 DI-CC cases finds 71/74 correct; excluding the 3 mislabels makes the result more negative, not less). |
+| Cross-model validation — Falcon-7B-Instruct | Inconclusive, not a third confirming/disconfirming data point: the same elicitation protocol yields only 10 DI-CC instances (vs. 74 for Mistral), so the resulting CI is uninformative (0.367–0.669, straddling chance). Falcon's underlying NQ-Swap probe is also markedly weaker (test_acc 0.605 vs. Mistral's 0.756) due to Falcon's lower closed-book knowledge yield (19.5% vs. Mistral's 70.8%). |
 
 Full statistics are written under `outputs/reports/` by the corresponding
 stage script (see table in [Running the Pipeline](#running-the-pipeline)
@@ -50,6 +52,11 @@ precision/recall, CAD α sensitivity, SelfCheckGPT baseline). The decomposer
 was also tested at 3B and 14B scale in the paper (Phase 2 scale ablation),
 but that ablation's code is not part of this staged release.
 
+It also covers the cross-model-family validation (stages 1–7 rerun end-to-end
+against Mistral-7B-Instruct-v0.3 and Falcon-7B-Instruct via `PHASE0_SCALE`,
+stage 42's bootstrap-CI diagnostic, stage 43's variance-ratio layer-selection
+re-check, and stage 44's manual-mislabel-exclusion sensitivity recompute).
+
 ```
 config.py                 # central path/model config (env-var driven)
 phase0/                   # library code: data loading, decomposition, probing
@@ -65,8 +72,10 @@ data/
   h3_bios_191person.jsonl              # frozen 191-person bio pool (H3, also source of H0 primary)
   h3_selfcheckgpt_resamples.jsonl      # frozen N=10 temperature-sampled resamples (SelfCheckGPT baseline)
 outputs/probes/
-  probe_layer22.joblib     # frozen probe checkpoint, accuracy-selected layer
-  probe_layer20.joblib     # frozen probe checkpoint, variance-ratio-selected layer
+  probe_layer22.joblib             # frozen probe checkpoint, accuracy-selected layer (7B)
+  probe_layer20.joblib             # frozen probe checkpoint, variance-ratio-selected layer (7B)
+  probe_layer18_mistral7b.joblib   # frozen probe checkpoint (Mistral-7B cross-model validation)
+  probe_layer28_falcon7b.joblib    # frozen probe checkpoint (Falcon-7B cross-model validation)
 outputs/reports/           # frozen small (<5KB) JSON reports behind every number above
 ```
 
