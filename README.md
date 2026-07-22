@@ -90,7 +90,7 @@ outputs/reports/           # frozen small (<5KB) JSON reports behind every numbe
 ## Quick Start
 
 ```bash
-git clone https://github.com/hollis-png/di-cc-decomposition-conflict.git
+git clone <this-repository-url>
 cd di-cc-decomposition-conflict
 ./setup.sh
 source .venv/bin/activate
