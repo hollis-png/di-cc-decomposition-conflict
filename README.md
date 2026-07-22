@@ -307,9 +307,9 @@ Hub / `datasets` library.
 ```bibtex
 @misc{dicc2026,
   title  = {Decomposition-Induced Context-Memory Conflict},
-  author = {Yen Yu Feng},
+  author = {Anonymous Authors},
   year   = {2026},
-  note   = {TODO: add venue / arXiv link once available}
+  note   = {Anonymized for double-blind review. TODO: add venue / arXiv link and restore author information after review.}
 }
 ```
 
