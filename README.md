@@ -7,6 +7,30 @@ own parametric belief for what a source passage actually says, producing an
 atomic claim that contradicts the source it was supposed to summarize
 faithfully.
 
+> **Update 2026-11 (paper v2) — read this first.**
+> A complete regeneration of the pipeline (with the fixes below) changed several
+> conclusions of v1 of the paper. The tables under "Headline Results" and the
+> frozen `outputs/reports/` / `outputs/probes/` files in this repo are the
+> **v1 results and are superseded**; they are kept for provenance only.
+>
+> - **Current results:** `outputs/rerun_2026-11/RESULTS.md` (the pre-registered
+>   design is `design_E1-E3_preregistered.md` there); scripts in `scripts/rerun/`
+>   (stage scripts are run through `scripts/rerun/run_patched.py`; results are
+>   from one RTX 5090 run on Qwen2.5-7B-Instruct and Mistral-7B-Instruct-v0.3).
+> - **What changed:** DI-CC is largely *instruction-induced* (a correction-licensing
+>   prompt; neutral, FActScore-style and passage-only prompts leave 0.2-0.5% of
+>   claims); the NQ-Swap probe's high AUCs are mostly indistinguishable from random
+>   directions, and after multiplicity correction only the last layer (28) exceeds
+>   them; the v1 Mistral result (AUC 0.397, "does not replicate") was not
+>   reproducible and was affected by a duplicated-BOS bug; the v1 CAD framing and
+>   the 3B/14B scale claims are withdrawn.
+> - **Code fix:** chat-templated text was tokenized a second time with special
+>   tokens, duplicating BOS for models whose template already inserts it (Mistral;
+>   Qwen has no BOS and is unaffected). `phase0/` now passes `add_special_tokens=False`.
+>   The frozen Mistral/Falcon probes and reports were produced *before* this fix.
+> - Added: `phase0/decomposition/control_prompts.py` and
+>   `scripts/45_faithful_control_smoke.py` (faithful/sham instruction controls).
+
 This repository lets you reproduce the paper's headline results and the
 robustness checks added during revision:
 
@@ -25,7 +49,7 @@ This is a **research artifact**, not a general-purpose library: it exists to
 let you re-run and inspect the exact pipeline behind the paper's numbers, not
 to be installed as a dependency in other projects.
 
-## Headline Results
+## Headline Results (v1 — superseded, see the update note above)
 
 | Result | Finding |
 |---|---|
@@ -305,11 +329,12 @@ Hub / `datasets` library.
 ## Citation
 
 ```bibtex
-@misc{dicc2026,
-  title  = {Decomposition-Induced Context-Memory Conflict},
-  author = {Anonymous Authors},
+@misc{yen2026dicc,
+  title  = {Decomposition-Induced Context-Memory Conflict: An Instruction-Induced Failure and a Probing Case Study},
+  author = {Yen, Yu-Feng},
   year   = {2026},
-  note   = {Anonymized for double-blind review. TODO: add venue / arXiv link and restore author information after review.}
+  eprint = {2608.10627},
+  archivePrefix = {arXiv}
 }
 ```
 

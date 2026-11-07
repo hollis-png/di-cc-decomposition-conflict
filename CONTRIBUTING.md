@@ -30,7 +30,7 @@ discussing them are still welcome.
 ## Development Setup
 
 ```bash
-git clone <this-repository-url>
+git clone https://github.com/hollis-png/di-cc-decomposition-conflict.git
 cd di-cc-decomposition-conflict
 ./setup.sh
 source .venv/bin/activate

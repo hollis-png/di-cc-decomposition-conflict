@@ -184,8 +184,8 @@ def decompose_with_cad(
     with_prompt = tokenizer.apply_chat_template(with_messages, tokenize=False, add_generation_prompt=True)
     without_prompt = tokenizer.apply_chat_template(without_messages, tokenize=False, add_generation_prompt=True)
 
-    with_inputs = tokenizer(with_prompt, return_tensors="pt").to(config.DEVICE)
-    without_inputs = tokenizer(without_prompt, return_tensors="pt").to(config.DEVICE)
+    with_inputs = tokenizer(with_prompt, add_special_tokens=False, return_tensors="pt").to(config.DEVICE)
+    without_inputs = tokenizer(without_prompt, add_special_tokens=False, return_tensors="pt").to(config.DEVICE)
 
     with_next_ids = with_inputs["input_ids"]
     without_next_ids = without_inputs["input_ids"]

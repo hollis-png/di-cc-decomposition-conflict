@@ -28,7 +28,7 @@ def load_decomposer_model():
 
 def _build_chat_inputs(tokenizer, messages: list[dict]):
     prompt = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
-    return tokenizer(prompt, return_tensors="pt").to(config.DEVICE)
+    return tokenizer(prompt, add_special_tokens=False, return_tensors="pt").to(config.DEVICE)
 
 
 @torch.no_grad()
@@ -59,7 +59,7 @@ def hidden_states_at_char_position(tokenizer, model, messages: list[dict], respo
     """
     prompt = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
     full_text = prompt + response_text[:char_end]
-    inputs = tokenizer(full_text, return_tensors="pt").to(config.DEVICE)
+    inputs = tokenizer(full_text, add_special_tokens=False, return_tensors="pt").to(config.DEVICE)
     outputs = model(**inputs)
     last_token_states = [h[0, -1, :].float().cpu().numpy() for h in outputs.hidden_states]
     return np.stack(last_token_states, axis=0)

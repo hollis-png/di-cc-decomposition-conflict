@@ -1,0 +1,107 @@
+{
+  "perturbed_baseline": {
+    "entities": 176,
+    "parse_fail_entities": 0,
+    "claims": 1449,
+    "DI-CC": 62,
+    "DI-CC_per_claim": 0.04278812974465148,
+    "entities_with_DICC": 60,
+    "labels": {
+      "legit": 1319,
+      "DI-CC": 62,
+      "excluded": 67,
+      "DI-UE": 1
+    },
+    "year_string_labels": {
+      "override": 108,
+      "other": 1276,
+      "copy": 62,
+      "contrast": 3
+    }
+  },
+  "perturbed_faithful": {
+    "entities": 176,
+    "parse_fail_entities": 0,
+    "claims": 1799,
+    "DI-CC": 3,
+    "DI-CC_per_claim": 0.0016675931072818232,
+    "entities_with_DICC": 3,
+    "labels": {
+      "legit": 1770,
+      "excluded": 26,
+      "DI-CC": 3
+    },
+    "year_string_labels": {
+      "copy": 183,
+      "other": 1612,
+      "override": 4
+    },
+    "vs_baseline": {
+      "entity_incidence_baseline_only": 57,
+      "entity_incidence_cond_only": 0,
+      "mcnemar_exact_p": 1.3877787807814457e-17,
+      "wilcoxon_counts_p": 7.443794082413716e-11
+    }
+  },
+  "perturbed_sham": {
+    "entities": 176,
+    "parse_fail_entities": 0,
+    "claims": 1730,
+    "DI-CC": 5,
+    "DI-CC_per_claim": 0.002890173410404624,
+    "entities_with_DICC": 5,
+    "labels": {
+      "legit": 1695,
+      "excluded": 30,
+      "DI-CC": 5
+    },
+    "year_string_labels": {
+      "copy": 175,
+      "other": 1548,
+      "override": 7
+    },
+    "vs_baseline": {
+      "entity_incidence_baseline_only": 55,
+      "entity_incidence_cond_only": 0,
+      "mcnemar_exact_p": 5.551115123125783e-17,
+      "wilcoxon_counts_p": 1.3131228980206548e-10
+    }
+  },
+  "perturbed_cad": {
+    "entities": 176,
+    "parse_fail_entities": 0,
+    "claims": 1356,
+    "DI-CC": 31,
+    "DI-CC_per_claim": 0.022861356932153392,
+    "entities_with_DICC": 29,
+    "labels": {
+      "legit": 1230,
+      "excluded": 93,
+      "DI-CC": 31,
+      "DI-UE": 2
+    },
+    "year_string_labels": {
+      "copy": 122,
+      "other": 1191,
+      "contrast": 26,
+      "override": 17
+    },
+    "vs_baseline": {
+      "entity_incidence_baseline_only": 38,
+      "entity_incidence_cond_only": 7,
+      "mcnemar_exact_p": 3.1213096463034162e-06,
+      "wilcoxon_counts_p": 0.0003579170253576302
+    }
+  },
+  "random_drop_matched": {
+    "drop_fraction": 0.06418219461697727,
+    "entity_incidence_mean": 0.3193068181818182,
+    "entity_incidence_95": [
+      0.29545454545454547,
+      0.3352272727272727
+    ],
+    "per_claim_rate_mean": 0.04272277419664803,
+    "baseline_entity_incidence": 0.3409090909090909,
+    "cad_entity_incidence": 0.16477272727272727
+  }
+}
